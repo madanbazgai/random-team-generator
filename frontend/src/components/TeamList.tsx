@@ -4,12 +4,6 @@ import { getTeams, deleteTeam } from "../api/team.api";
 import { toast } from "sonner";
 import { Trash2, AlertTriangle, X, Loader2 } from "lucide-react";
 
-interface Team {
-  _id: string;
-  name: string;
-  players: string[];
-}
-
 interface DeleteModalState {
   isOpen: boolean;
   teamId: string | null;
@@ -23,29 +17,38 @@ interface DeleteConfirmModalProps {
   teamName: string;
 }
 
-const DeleteConfirmModal = ({ isOpen, onClose, onConfirm, teamName }: DeleteConfirmModalProps) => {
+const DeleteConfirmModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  teamName,
+}: DeleteConfirmModalProps) => {
   if (!isOpen) return null;
-  
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 max-w-md w-full border border-white/40 shadow-xl">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <AlertTriangle className="text-red-500" size={24} />
-            <h3 className="text-xl font-semibold text-gray-800">Confirm Deletion</h3>
+            <h3 className="text-xl font-semibold text-gray-800">
+              Confirm Deletion
+            </h3>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 transition-colors"
           >
             <X size={20} />
           </button>
         </div>
-        
+
         <p className="text-gray-700 mb-6">
-          Are you sure you want to delete <span className="font-semibold">{teamName}</span>? This action cannot be undone.
+          Are you sure you want to delete{" "}
+          <span className="font-semibold">{teamName}</span>? This action cannot
+          be undone.
         </p>
-        
+
         <div className="flex justify-end gap-3">
           <button
             onClick={onClose}
@@ -72,16 +75,16 @@ const TeamList = () => {
     teamId: null,
     teamName: "",
   });
-  
+
   const {
     data: teams = [],
     isLoading,
     error,
-  } = useQuery<Team[], Error>({
+  } = useQuery({
     queryKey: ["teams"],
     queryFn: getTeams,
   });
-  
+
   const { mutate: deleteMutation } = useMutation({
     mutationFn: (id: string) => deleteTeam(id),
     onSuccess: () => {
@@ -94,7 +97,7 @@ const TeamList = () => {
       closeDeleteModal();
     },
   });
-  
+
   const openDeleteModal = (teamId: string, teamName: string) => {
     setDeleteModal({
       isOpen: true,
@@ -102,7 +105,7 @@ const TeamList = () => {
       teamName,
     });
   };
-  
+
   const closeDeleteModal = () => {
     setDeleteModal({
       isOpen: false,
@@ -110,13 +113,13 @@ const TeamList = () => {
       teamName: "",
     });
   };
-  
+
   const confirmDelete = () => {
     if (deleteModal.teamId) {
       deleteMutation(deleteModal.teamId);
     }
   };
-  
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center p-12 backdrop-blur-lg bg-white/30 rounded-2xl border border-white/40">
@@ -127,7 +130,7 @@ const TeamList = () => {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="bg-red-50/70 backdrop-blur-sm p-6 rounded-2xl border border-red-200/50 shadow-sm">
@@ -138,7 +141,7 @@ const TeamList = () => {
       </div>
     );
   }
-  
+
   if (teams.length === 0) {
     return (
       <div className="bg-amber-50/70 backdrop-blur-sm p-8 rounded-2xl border border-amber-200/50 shadow-sm text-center">
@@ -149,13 +152,13 @@ const TeamList = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-6">
         Team List
       </h2>
-      
+
       <div className="space-y-3">
         {teams.map((team) => (
           <div
@@ -174,7 +177,7 @@ const TeamList = () => {
           </div>
         ))}
       </div>
-      
+
       <DeleteConfirmModal
         isOpen={deleteModal.isOpen}
         onClose={closeDeleteModal}

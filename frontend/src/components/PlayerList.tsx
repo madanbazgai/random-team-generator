@@ -4,13 +4,6 @@ import { getPlayers, deletePlayer } from "../api/player.api";
 import { toast } from "sonner";
 import { Star, Trash2, AlertTriangle, X } from "lucide-react";
 
-interface Player {
-  _id: string;
-  name: string;
-  position: string;
-  skill: number;
-}
-
 interface DeleteModalState {
   isOpen: boolean;
   playerId: string | null;
@@ -79,7 +72,7 @@ const PlayerList = () => {
     data: players = [],
     isLoading,
     error,
-  } = useQuery<Player[], Error>({
+  } = useQuery({
     queryKey: ["players"],
     queryFn: getPlayers,
   });

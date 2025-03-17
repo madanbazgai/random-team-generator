@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, Response, RequestHandler } from "express";
 import { nanoid } from "nanoid";
 import { GenerateTeamSchema } from "../validations/index.ts";
 import GeneratedTeam from "../models/generateTeam.model.ts";
@@ -26,7 +26,10 @@ const balanceTeams = (
   return teams;
 };
 
-export const generateTeams = async (req: Request, res: Response) => {
+export const generateTeams: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const { title, numberOfTeams } = GenerateTeamSchema.parse(req.body);
 
@@ -35,11 +38,12 @@ export const generateTeams = async (req: Request, res: Response) => {
     console.log(players);
 
     if (players.length < numberOfTeams * 2) {
-      return res.status(400).json({
+      res.status(400).json({
         error: `Need at least ${
           numberOfTeams * 2
         } players to create ${numberOfTeams} teams`,
       });
+      return;
     }
 
     const playerData = players.map((player) => ({
@@ -84,7 +88,10 @@ export const generateTeams = async (req: Request, res: Response) => {
   }
 };
 
-export const getSessionByShareId = async (req: Request, res: Response) => {
+export const getSessionByShareId: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const { shareId } = req.params;
     const session = await GeneratedTeam.findOne({ shareId }).populate(
@@ -92,7 +99,8 @@ export const getSessionByShareId = async (req: Request, res: Response) => {
     );
 
     if (!session) {
-      return res.status(404).json({ error: "Team session not found" });
+      res.status(404).json({ error: "Team session not found" });
+      return;
     }
 
     res.status(200).json(session);

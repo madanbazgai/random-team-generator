@@ -40,5 +40,4 @@ const connectWithRetry = () => {
     });
 };
 
-// Initial connection attempt
 connectWithRetry();
