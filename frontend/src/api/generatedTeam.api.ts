@@ -2,6 +2,7 @@ import { BASE_URL } from ".";
 
 export interface GeneratedTeam {
   _id?: string;
+  title: string;
   teams: {
     name: string;
     players: string[];
@@ -11,13 +12,14 @@ export interface GeneratedTeam {
 }
 
 export interface GenerateTeamRequest {
-  players: string[];
+  title: string;
   numberOfTeams: number;
 }
 
 export const generateTeams = async (
   data: GenerateTeamRequest
 ): Promise<GeneratedTeam> => {
+
   const response = await fetch(`${BASE_URL}/generate`, {
     method: "POST",
     headers: {
@@ -27,19 +29,21 @@ export const generateTeams = async (
   });
 
   if (!response.ok) {
-    throw new Error("Failed to generate teams");
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to generate teams");
   }
 
   return response.json();
 };
 
-export const getSessionByShareId = async (
+export const getTeamByShareId = async (
   shareId: string
 ): Promise<GeneratedTeam> => {
   const response = await fetch(`${BASE_URL}/team/${shareId}`);
 
   if (!response.ok) {
-    throw new Error("Failed to fetch team session");
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to fetch team session");
   }
 
   return response.json();
