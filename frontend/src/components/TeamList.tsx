@@ -167,7 +167,7 @@ const TeamList = () => {
           >
             <span className="font-medium text-gray-800">{team.name}</span>
             <button
-              onClick={() => openDeleteModal(team._id, team.name)}
+              onClick={() => openDeleteModal(team._id!, team.name)}
               className="p-2 text-white bg-gradient-to-r from-red-500 to-red-600 rounded-lg hover:from-red-600 hover:to-red-700 transition-all flex items-center gap-1.5 text-sm shadow-sm"
               aria-label="Delete team"
             >

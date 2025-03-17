@@ -175,7 +175,7 @@ const PlayerList = () => {
               </div>
             </div>
             <button
-              onClick={() => openDeleteModal(player._id, player.name)}
+              onClick={() => openDeleteModal(player._id!, player.name)}
               className="p-1.5 text-red-500 hover:bg-red-50/70 rounded-full transition-colors"
               aria-label="Delete player"
             >
