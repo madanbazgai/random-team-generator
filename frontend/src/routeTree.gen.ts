@@ -11,9 +11,30 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TeamsImport } from './routes/teams'
+import { Route as PlayersImport } from './routes/players'
+import { Route as GeneratedTeamImport } from './routes/generated-team'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const TeamsRoute = TeamsImport.update({
+  id: '/teams',
+  path: '/teams',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlayersRoute = PlayersImport.update({
+  id: '/players',
+  path: '/players',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GeneratedTeamRoute = GeneratedTeamImport.update({
+  id: '/generated-team',
+  path: '/generated-team',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -32,6 +53,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/generated-team': {
+      id: '/generated-team'
+      path: '/generated-team'
+      fullPath: '/generated-team'
+      preLoaderRoute: typeof GeneratedTeamImport
+      parentRoute: typeof rootRoute
+    }
+    '/players': {
+      id: '/players'
+      path: '/players'
+      fullPath: '/players'
+      preLoaderRoute: typeof PlayersImport
+      parentRoute: typeof rootRoute
+    }
+    '/teams': {
+      id: '/teams'
+      path: '/teams'
+      fullPath: '/teams'
+      preLoaderRoute: typeof TeamsImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/generated-team': typeof GeneratedTeamRoute
+  '/players': typeof PlayersRoute
+  '/teams': typeof TeamsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/generated-team': typeof GeneratedTeamRoute
+  '/players': typeof PlayersRoute
+  '/teams': typeof TeamsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/generated-team': typeof GeneratedTeamRoute
+  '/players': typeof PlayersRoute
+  '/teams': typeof TeamsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/generated-team' | '/players' | '/teams'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/generated-team' | '/players' | '/teams'
+  id: '__root__' | '/' | '/generated-team' | '/players' | '/teams'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GeneratedTeamRoute: typeof GeneratedTeamRoute
+  PlayersRoute: typeof PlayersRoute
+  TeamsRoute: typeof TeamsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GeneratedTeamRoute: GeneratedTeamRoute,
+  PlayersRoute: PlayersRoute,
+  TeamsRoute: TeamsRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +134,23 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/generated-team",
+        "/players",
+        "/teams"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/generated-team": {
+      "filePath": "generated-team.tsx"
+    },
+    "/players": {
+      "filePath": "players.tsx"
+    },
+    "/teams": {
+      "filePath": "teams.tsx"
     }
   }
 }

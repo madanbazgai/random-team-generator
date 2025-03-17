@@ -4,10 +4,12 @@ import { Header } from "../components/Header";
 
 export const Route = createRootRoute({
   component: () => (
-    <>
+    <div className="flex flex-col h-screen justify-between">
       <Header />
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
       <Footer />
-    </>
+    </div>
   ),
 });
